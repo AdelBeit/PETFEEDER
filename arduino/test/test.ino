@@ -1,92 +1,25 @@
-//int pin2 = 0;
-//
-//void setup() {
-//  // put your setup code here, to run once:
-//  pinMode(pin2, OUTPUT);
-//}
-//
-//void loop() {
-//  // put your main code here, to run repeatedly:
-//  digitalWrite(pin2, HIGH);
-//  delay(500);
-//  digitalWrite(pin2, LOW);
-//  delay(500);
-//}
+int program_pin = 12;
+int enable_pin = 13;
 
-/*
- *  Simple HTTP get webclient test
- */
- 
-#include <ESP8266WiFi.h>
- 
-const char* ssid = "Wu-Tang LAN";
-const char* password = "vdbrcj233";
- 
-const char* host = "wifitest.adafruit.com";
-
-
-void setup() {
+void setup()
+{
+  Serial1.begin(115200);
   Serial.begin(115200);
-  delay(100);
- 
-  // We start by connecting to a WiFi network
- 
-  Serial.println();
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-  
-  WiFi.begin(ssid, password);
-  
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
- 
-  Serial.println("");
-  Serial.println("WiFi connected");  
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-  Serial.print("Netmask: ");
-  Serial.println(WiFi.subnetMask());
-  Serial.print("Gateway: ");
-  Serial.println(WiFi.gatewayIP());
+  pinMode(enable_pin, OUTPUT);
+  pinMode(program_pin, OUTPUT);
+  digitalWrite(program_pin, LOW);
+  digitalWrite(enable_pin,HIGH);
 }
- 
-int value = 0;
- 
-void loop() {
-  delay(5000);
-  ++value;
- 
-  Serial.print("connecting to ");
-  Serial.println(host);
-  
-  // Use WiFiClient class to create TCP connections
-  WiFiClient client;
-  const int httpPort = 80;
-  if (!client.connect(host, httpPort)) {
-    Serial.println("connection failed");
-    return;
+
+void loop()
+{
+  while(Serial1.available()){
+    Serial.write((uint8_t)Serial1.read());
   }
-  
-  // We now create a URI for the request
-  String url = "/testwifi/index.html";
-  Serial.print("Requesting URL: ");
-  Serial.println(url);
-  
-  // This will send the request to the server
-  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
-               "Host: " + host + "\r\n" + 
-               "Connection: close\r\n\r\n");
-  delay(500);
-  
-  // Read all the lines of the reply from server and print them to Serial
-  while(client.available()){
-    String line = client.readStringUntil('\r');
-    Serial.print(line);
+
+  if(Serial.available()){
+    while(Serial.available()){
+      Serial1.write((uint8_t)Serial.read());
+    }
   }
-  
-  Serial.println();
-  Serial.println("closing connection");
 }

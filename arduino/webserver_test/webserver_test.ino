@@ -1,26 +1,11 @@
-//int pin2 = 0;
-//
-//void setup() {
-//  // put your setup code here, to run once:
-//  pinMode(pin2, OUTPUT);
-//}
-//
-//void loop() {
-//  // put your main code here, to run repeatedly:
-//  digitalWrite(pin2, HIGH);
-//  delay(500);
-//  digitalWrite(pin2, LOW);
-//  delay(500);
-//}
-
 /*
  *  Simple HTTP get webclient test
  */
  
 #include <ESP8266WiFi.h>
  
-const char* ssid = "Wu-Tang LAN";
-const char* password = "vdbrcj233";
+const char* ssid = "loading...";
+const char* password = "youtellme";
  
 const char* host = "wifitest.adafruit.com";
 
