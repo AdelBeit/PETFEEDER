@@ -8,7 +8,7 @@ const char* ssid = "loading...";
 const char* password = "youtellme";
  
 //const char* host = "wifitest.adafruit.com";
-const char* host = "192.168.1.7:1337";
+//const char* host = "192.168.1.7:1337";
 
 
 void setup() {
@@ -40,8 +40,20 @@ void setup() {
 }
  
 int value = 0;
- 
+char* host = "";
+int httpport = 0;
+char* srinput = "";
+
 void loop() {
+
+  if(Serial.available() > 0){
+    srinput = Serial.read(); // get serial input for host and port
+
+    // get host and port from input
+    
+    
+  }
+  
   delay(5000);
   ++value;
  
