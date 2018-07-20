@@ -7,8 +7,8 @@
 const char* ssid = "loading...";
 const char* password = "youtellme";
  
-//const char* host = "wifitest.adafruit.com";
-const char* host = "192.168.1.7:1337";
+const char* host = "wifitest.adafruit.com";
+//const char* host = "192.168.1.7";
 
 
 void setup() {
@@ -51,14 +51,15 @@ void loop() {
   // Use WiFiClient class to create TCP connections
   WiFiClient client;
   const int httpPort = 80;
+//  const int httpPort = 1337;
   if (!client.connect(host, httpPort)) {
     Serial.println("connection failed");
     return;
   }
   
   // We now create a URI for the request
-  //String url = "/testwifi/index.html";
-  String url = "/index.html";
+  String url = "/testwifi/index.html";
+//  String url = "/index.html";
   Serial.print("Requesting URL: ");
   Serial.println(url);
   
