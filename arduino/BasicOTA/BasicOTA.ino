@@ -3,16 +3,16 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 
-//------------------------------for local web
+//------------------------------ webserver
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 
 MDNSResponder mdns;
-ESP8266WebServer server(80);
+ESP8266WebServer server(1337);
 String webPage;
 
 
-//------------------------------for local web
+//------------------------------ ota code
 
 const char* ssid = "loading...";
 const char* password = "youtellme";
@@ -70,8 +70,49 @@ void setup() {
   Serial.println("Ready");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+
+  //------------------------------ code
+
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  //------------------------------ webserver
+
+  webPage += "<h1>EA Server</h1><p>Socket #1 ";
+  webPage += "<a href=\"socket1On\"><button>ON</button></a>&nbsp;";
+  webPage += "<a href=\"socket1Off\"><button>OFF</button></a></p>";
+
+  if (mdns.begin("esp8266", WiFi.localIP())) 
+    Serial.println("MDNS responder started");
+ 
+  server.on("/", [](){
+    server.send(200, "text/html", webPage);
+  });
+  server.on("/socket1On", [](){
+    server.send(200, "text/html", webPage);
+    // Turn off LED
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(500);
+  });
+  server.on("/socket1Off", [](){
+    server.send(200, "text/html", webPage);
+    //Turn on LED
+    digitalWrite(LED_BUILTIN, HIGH      );
+    delay(500); 
+  });
+
+  server.begin();
 }
 
 void loop() {
   ArduinoOTA.handle();
+
+  //------------------------------ code 
+//  digitalWrite(4, HIGH);
+//  delay(500);
+//  digitalWrite(4, LOW);
+//  delay(200);
+
+  server.handleClient();
+  
+  //------------------------------ webserver
 }
